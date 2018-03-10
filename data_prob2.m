@@ -21,6 +21,7 @@ flight_num = x_Flight_txt(:,1);
 
 %Arcs
 flight_arcs = x_Flight_txt(:,2:3);
+num_arcs = length(flight_arcs(:,1));
 
 %Capacity 
 capacity = x_Flight_num(:,3); 
@@ -42,5 +43,29 @@ it_legs = x_Itinerary_raw(:,6:7);
 
 %Recap rates
 recap_rate = x_RecapRate(:,1:3); 
+
+%__________________________________________________________________________
+%Build network excluding duplicate arcs 
+airports = union(flight_arcs(:,1), flight_arcs(:,2));
+
+%Assign node numbers to arcs  
+O_arc = zeros(2*num_arcs,1); 
+D_arc = zeros(2*num_arcs,1);
+
+for i=1:num_arcs
+    % Origin
+    O_arc(i) = find(strcmp(airports, flight_arcs{i,1}));
+    O_arc(i+num_arcs) = find(strcmp(airports, flight_arcs{i,2}));
+    % Destination
+    D_arc(i) = find(strcmp(airports, flight_arcs{i,2}));
+    D_arc(i+num_arcs) = find(strcmp(airports, flight_arcs{i,1}));
+end
+
+%remove duplicates
+OD_arcs = unique([O_arc, D_arc], 'rows');
+
+%Build network
+Network = digraph(OD_arcs(:,1), OD_arcs(:,2), 1, airports); 
+plot(Network);
 
 save('Data_prob2')
