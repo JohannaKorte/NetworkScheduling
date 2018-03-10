@@ -9,7 +9,7 @@
 %--------------------------------------------------------------------------
 clear all; close all; clc;
 
-datafile='Input_AE4424_Ass1P2.xlsx'
+datafile='Input_AE4424_Ass1P2.xlsx'; 
 
 %Load excel data 
 [x_Flight_num, x_Flight_txt, x_Flight_raw] = xlsread(datafile,'Flight','A2:F233');
@@ -67,5 +67,19 @@ OD_arcs = unique([O_arc, D_arc], 'rows');
 %Build network
 Network = digraph(OD_arcs(:,1), OD_arcs(:,2), 1, airports); 
 plot(Network);
+
+%__________________________________________________________________________
+% Give numbers to itineraries (commodities)
+num_itineraries = length(itineraries(:,1));
+
+O_it = zeros(num_itineraries,1); 
+D_it = zeros(num_itineraries,1);
+
+for i=1:num_itineraries
+    % Origin
+    O_it(i) = find(strcmp(airports, itineraries{i,1}));
+    % Destination
+    D_it(i) = find(strcmp(airports, itineraries{i,2}));
+end
 
 save('Data_prob2')
