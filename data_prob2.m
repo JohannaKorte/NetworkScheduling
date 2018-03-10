@@ -63,9 +63,12 @@ end
 
 %remove duplicates
 OD_arcs = unique([O_arc, D_arc], 'rows');
+O_arc = OD_arcs(:,1);
+D_arc = OD_arcs(:,2); 
+num_arcs_unique = length(OD_arcs(:,1));
 
 %Build network
-Network = digraph(OD_arcs(:,1), OD_arcs(:,2), 1, airports); 
+Network = digraph(O_arc, D_arc, 1, airports); 
 plot(Network);
 
 %__________________________________________________________________________
