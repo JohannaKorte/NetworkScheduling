@@ -20,7 +20,6 @@ u = [20 10 10 20 40 10 30]';
 % Commodity
 d =  [15 5 10 5]';
 
-
 % Assign node number to arcs:
 nA = 7;
 Oa = [1 1 2 2 3 3 4]'; 
