@@ -7,7 +7,7 @@
 %--------------------------------------------------------------------------
 % Column Generation Algorithm
 %--------------------------------------------------------------------------
-function fval=increaseC(K0,Ap0, Kp0,Set1,u_mod)
+function fval=f_increaseC(K0,Ap0, Kp0,Set1,u_mod)
 
 % Load data for the problem
 load('Data.mat')
