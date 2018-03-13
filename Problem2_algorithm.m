@@ -12,57 +12,58 @@ clear all; close all; clc;
 % Load data for the problem
 load('Data_prob2.mat');
 
-% A. Initial set of columns for RMP:  shortest path algorithm
-%--------------------------------------------------------------------------
+%Loop over flights and itineraries to make path matrix delta with as 
+%rows flights,and itineraries as columns. Is 1 when flight is in itinerary.
+delta=zeros(num_flights,num_it); 
+for f=1:num_flights
+    fnum = flight_no(f); 
+    for i=1:num_it
+        leg1 = legs(i,1);
+        leg2 = legs(i,2);
+        % If flight leg part of itinerary, add itinerary demand and add to
+        % Delta matrix as 1 
+        if fnum==leg1 %|| fnum==leg2
+            delta(f,i)=1;
+        elseif fnum==leg2
+            delta(f,1)=1; 
+        end   
+    end
+end 
 
-RMP_set = zeros(num_arcs_unique,num_itineraries);
-flight_p = zeros(num_arcs_unique,num_itineraries);
-itinerary_p = zeros(num_itineraries,num_itineraries);
+%_______________RPM________________________________________________________
+%Decision variables t^0_1, t^0_2, ..., (t^1_1, t^1_2 ....)
+numdv=num_it; 
 
-% Path structure:
-% K(k).P(p).path =[];
-% p is the path counter
-% k is commodity counter
-% path array containing the nodes in order of the path
-
-p = 1; 
-
-for i = 1:num_itineraries  
-K(i).P(p).path = shortestpath(Network,O_it(i),D_it(i));
-
-%    % Set1 is the initial set of columns.
-%    % The rows correspond to each arc, the columns to the path of each
-%    % commodity. The elements are the quantities. 
-%    % ( See tableaux path formulation )
-   for j=1:length(K(i).P(p).path)-1
-       
-       ni = K(i).P(p).path(j);
-       nj = K(i).P(p).path(j+1); 
-       
-   i_arc = find(O_arc==ni & D_arc==nj);
-       
-   RMP_set(i_arc,i) = it_demand(i);
-   
-   % path arc matrix: 
-   flight_p(i_arc,i) = 1;
-   
-   end
-   
-   % path commodity matrix:
-   itinerary_p(i,i) = 1;
-
+%Objective function
+obj=zeros(numdv,1);
+for i=1:numdv
+    obj(i) = it(i,3); %fare 
 end
 
-% 1. Compute slack variables:
-%--------------------------------------------------------------------------
-s_temp = sum(RMP_set')'-capacity;
-s = max(0,s_temp);
+%Constraints (6)
+C6=zeros(num_flights,numdv); 
+for f=1:num_flights
+    for i=1:numdv
+        %-1 because of >= 
+        C6(f,i)=-1 * delta(f,i); 
+    end        
+end
+%Because constraint >= multiply by -1 
+rhs6=delta*it(:,2)-capacity; 
+rhs6 = rhs6*-1;
 
-figure
-map = plot(Network,'Layout','force','EdgeLabel',Network.Edges.Weight);
-highlight(map, K(1).P(p).path,'EdgeColor','red')
+%Constraints (7)
+C7=zeros(num_it,numdv);
+rhs7=zeros(num_it,1); 
+for i=1:num_it
+    rhs7(i,1) = it(i,2); %demand
+    C7(i,i)=1; 
+end
+Aineq=[C6;C7];
+rhs=[rhs6;rhs7]; 
 
-
-% B. Solve RPM
-%--------------------------------------------------------------------------
-%[f, fval, pi, sigma] = solveRPM(u,C,nK,nA,d,Set,Kp,Ap,s);
+lb = zeros(numdv,1); 
+ub = []; 
+[x,fval,exitflag,output,lambda] = linprog(obj,Aineq,rhs,[],[],lb,[]); 
+pi = lambda.ineqlin;
+sigma  = - lambda.eqlin; 
