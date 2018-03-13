@@ -11,10 +11,10 @@
 clear all; close all; clc;
 
 % Load data for the problem
-load('Data.mat')
+load('Data_prob1.mat')
 
 % Load data for validation
-% load('test.mat')
+% load('test_prob1.mat')
 
 % A. Initial set of columns for RMP:  shortest path algorithm
 %--------------------------------------------------------------------------

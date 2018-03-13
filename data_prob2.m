@@ -30,7 +30,8 @@ legs=string(x_Itinerary_txt(:,5:6));
 it=[x_Itinerary_num(:,1),x_Itinerary_num(:,4),x_Itinerary_num(:,5)]; 
 num_it=length(it(:,1)); 
 
-%Recap rates
-recap_rate = x_RecapRate(:,1:3); 
+%Recap = [From It, To It, b, Fare 'From', Fare 'To']
+recap = x_RecapRate(:,1:3);
+num_recap = length(recap(:,1)); 
 
 save('Data_prob2')

@@ -10,8 +10,8 @@
 % trying git
 clear all; close all; clc;
 
-load('Data.mat')
-% load('test.mat')
+load('Data_prob1.mat')
+% load('test_prob1.mat')
 
 % Display Network
 figure
