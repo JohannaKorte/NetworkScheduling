@@ -40,11 +40,9 @@ for i=1:num_it
     ficticious(i,4)=it(i,3); %Fare of preferred itinerary
 end 
 
-
-recap_rate = x_RecapRate(:,1:5); 
-recap_rate=[ficticious;recap_rate]; 
-
 %Recap = [From It, To It, b, Fare 'From', Fare 'To']
+recap_rate = x_RecapRate(:,1:5); 
+recap_rate=[ficticious;recap_rate];
 num_recap = length(recap(:,1)); 
 
 %Set of already included columns
