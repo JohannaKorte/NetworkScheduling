@@ -11,7 +11,7 @@
 % If not fulfilled --> add constraint to RPM
 %--------------------------------------------------------------------------
 
-function [Opt_row, v_addrow] = AddRows(dv, it, recap, num_it)
+function [Opt_row, v_addrow] = AddRows(dv, it, recap_rate, num_it)
 % Input:
 %
 % dv: Decision vbles resulting from RPM
@@ -20,7 +20,7 @@ function [Opt_row, v_addrow] = AddRows(dv, it, recap, num_it)
 % num_recap
 
 
-Aineq_C7 = buildC7(dv, recap, num_it);
+Aineq_C7 = buildC7(dv, recap_rate, num_it);
 Dp = it(:,2);
 
 C7 = Aineq_C7*dv-Dp;

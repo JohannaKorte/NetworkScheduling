@@ -1,4 +1,4 @@
-function Aineq_C7 = buildC7(dv, recap, num_it)
+function Aineq_C7 = buildC7(dv, recap_rate, num_it)
 
 
 
@@ -14,7 +14,7 @@ Aineq_C7 = zeros(num_dv,num_it);
 for j=1:num_it
     
     % origin itinerary for of each dv
-    itp = recap(index_r,1);    
+    itp = recap_rate(index_r,1);    
     
     % Find all dv with originating itinerary = j
     p = find(itp==j);
