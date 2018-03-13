@@ -43,7 +43,7 @@ end
 %Recap = [From It, To It, b, Fare 'From', Fare 'To']
 recap_rate = x_RecapRate(:,1:5); 
 recap_rate=[ficticious;recap_rate];
-num_recap = length(recap(:,1)); 
+num_recap = length(recap_rate(:,1)); 
 
 %Set of already included columns
 Set = linspace(1,737,737); 
