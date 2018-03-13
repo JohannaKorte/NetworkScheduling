@@ -10,10 +10,10 @@
 clear all; close all; clc;
 
 % Load data for the problem
-load('Data.mat')
+load('Data_prob1.mat')
 
 % Load data for validation
-% load('test.mat')
+% load('test_prob1.mat')
 
 % A. Initial set of columns for RMP:  shortest path algorithm
 %--------------------------------------------------------------------------
@@ -80,7 +80,7 @@ stop_cond = 0;
 while stop_cond == 0 && it < Maxit
 % B. Solve RMP
 %--------------------------------------------------------------------------
-[f, fval, pi, sigma] = solveRPM(u,C,nK,nA,d,Set,Kp,Ap,s);
+[f, fval, pi, sigma] = solveRPM1(u,C,nK,nA,d,Set,Kp,Ap,s);
 fval
 
 

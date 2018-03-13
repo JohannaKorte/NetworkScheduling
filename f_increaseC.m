@@ -5,12 +5,13 @@
 % Johanna Korte
 % Carmen Velarde
 %--------------------------------------------------------------------------
-% Column Generation Algorithm
+% Solve Problem 1a.2 for different capacities (u_mod)
 %--------------------------------------------------------------------------
+
 function fval=f_increaseC(K0,Ap0, Kp0,Set1,u_mod)
 
 % Load data for the problem
-load('Data.mat')
+load('Data_prob1.mat')
 clear u
 u=u_mod;
 K=K0;

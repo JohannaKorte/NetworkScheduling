@@ -1,3 +1,14 @@
+% ASSIGNMENT Ia:  Air Cargo Multi-commodity Flow
+%
+% TU Delft 2018
+%
+% Johanna Korte
+% Carmen Velarde
+%--------------------------------------------------------------------------
+% Column generation: Adding new columns to existing set
+%--------------------------------------------------------------------------
+
+
 function [K, Set, Ap, Kp, stop_cond] = GenerateSet(Oa, Da, nA, Ok, Dk, nK, K, Set1, cost, sigma, d)
 
 Network  = digraph(Oa,Da,cost);
