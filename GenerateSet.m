@@ -1,4 +1,4 @@
-function [K, Set, Ap, Kp] = GenerateSet(Oa, Da, nA, Ok, Dk, nK, K, Set1, cost, sigma, d)
+function [K, Set, Ap, Kp, stop_cond] = GenerateSet(Oa, Da, nA, Ok, Dk, nK, K, Set1, cost, sigma, d)
 
 Network  = digraph(Oa,Da,cost);
 
@@ -8,8 +8,8 @@ npold=0;
 % Patch counter in previous set
 npold1=0;
 
-% optimality counter:
-opt=0;
+% Stop condition:
+stop_cond = 0;
 
 for k=1:nK
 
@@ -55,6 +55,7 @@ for k=1:nK
            Kp(k,1+npold)  = 1;
            K(k).P(np+1).path = path;
            npold=npold+1;
+
    end
 
    
@@ -63,5 +64,8 @@ end
 Ap=Set;
 Ap(find(Set>0))=1;
 
+if size(Set)==size(Set1)
+    stop_cond=1;
+end
 
 end

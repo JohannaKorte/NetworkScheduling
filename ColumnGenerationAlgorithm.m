@@ -24,9 +24,9 @@ Kp = zeros(nK,nK);
 
 % Path structure:
 % K(k).P(p).path =[];
-% p is the path counter
-% k is commodity counter
-% path array containing the nodes in order of the path
+% p    :: path counter
+% k    :: commodity counter
+% path :: array containing the nodes in order of the path
 
 p = 1; 
 
@@ -56,8 +56,10 @@ K(i).P(p).path = shortestpath(Network,Ok(i),Dk(i));
    Kp(i,i) = 1;
 
 end
-
-% 1. Compute slack variables:
+K0=K;
+Ap0=Ap;
+Kp0=Kp;
+% Compute slack variables:
 %--------------------------------------------------------------------------
 stemp = sum(Set1')'-u;
 s = max(0,stemp);
@@ -67,43 +69,44 @@ figure
 map = plot(Network,'Layout','force','EdgeLabel',Network.Edges.Weight);
 highlight(map, K(1).P(p).path,'EdgeColor','red')
 
-opt   = 0;
-opt=0;
 
+% Iteration
+%--------------------------------------------------------------------------
 Maxit = 100;
-Set = Set1;
-it = 1;
+Set   = Set1;
+it    = 1;
+stop_cond = 0;
 
-fval_dec=1;
-fvalold = 9999999;
-while fval_dec == 1 && it < Maxit
-
-% B. Solve RPM
+while stop_cond == 0 && it < Maxit
+% B. Solve RMP
 %--------------------------------------------------------------------------
 [f, fval, pi, sigma] = solveRPM(u,C,nK,nA,d,Set,Kp,Ap,s);
-
-% % Check stop condition
-% opt_cond = Ap'*(C+pi)-Kp'*(sigma./d);
-% n_opt=length(find(opt_cond>=0));
-% 
-% nP = length(Set(1,:)); % number of paths
-% if n_opt==nP
-%     opt=1;
-% end
+fval
 
 
-% C. Modify costs
+% C. Modify costs and pricing problem
 %--------------------------------------------------------------------------
 
 cost = C-pi;
-[K, Set, Ap, Kp] = GenerateSet(Oa, Da, nA, Ok, Dk, nK, K, Set, cost, sigma, d);
-
-if fval >= fvalold
-fval_dec= 0;
-end
-
-fvalold=fval;
+[K, Set, Ap, Kp, stop_cond] = GenerateSet(Oa, Da, nA, Ok, Dk, nK, K, Set, cost, sigma, d);
+stemp2 = sum(Set')'-u;
+s2 = max(0,stemp2);
 it=it+1;
 end
 
+% Check optimality condition
+ opt_cond = Ap'*(C-pi)-Kp'*(sigma./d);
+ n_opt=length(find(round(opt_cond,3)>=0));
 
+ nP = length(Set(1,:)); % number of paths
+  if n_opt==nP
+      opt=1;
+  end
+
+
+
+% Results
+%--------------------------------------------------------------------------
+fprintf('Objective Function:    %6f\n',fval)
+
+fprintf('number of iterations:  %2i\n',it-1)
