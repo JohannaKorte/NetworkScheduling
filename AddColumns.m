@@ -5,7 +5,7 @@
 % Johanna Korte
 % Carmen Velarde
 %--------------------------------------------------------------------------
-% Solve Pricing problem: add columns
+% Solve Pricing problem: Add columns
 %--------------------------------------------------------------------------
 
 function [Opt_col, v_addcol] = AddColumns(recap, num_recap, pi, sigma)
