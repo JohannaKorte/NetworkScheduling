@@ -33,10 +33,10 @@ it=[it;[738,10000,0]]; %Add ficticious itinerary with unlimited demand
 num_it=length(it(:,1)); 
 
 ficticious=zeros(num_it,5); 
-ficticious(:,2)=738; %Origin itinerary is 738 for now, because an itinerary 0 already exists
+ficticious(:,2)=738; %Destination itinerary is 738 for now, because an itinerary 0 already exists
 ficticious(:,3)=1; %Recap rate, all people are willing to recap to this one
 for i=1:num_it
-    ficticious(i,1)=i-1; %Destination itinerary 
+    ficticious(i,1)=i-1; %Origin itinerary 
     ficticious(i,4)=it(i,3); %Fare of preferred itinerary
 end 
 
