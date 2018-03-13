@@ -51,19 +51,21 @@ end
 %Because constraint >= multiply by -1 
 rhs6=delta*it(:,2)-capacity; 
 rhs6 = rhs6*-1;
-
-%Constraints (7)
-C7=zeros(num_it,numdv);
-rhs7=zeros(num_it,1); 
-for i=1:num_it
-    rhs7(i,1) = it(i,2); %demand
-    C7(i,i)=1; 
-end
-Aineq=[C6;C7];
-rhs=[rhs6;rhs7]; 
+rhs=rhs6;
+Aineq=C6; 
 
 lb = zeros(numdv,1); 
 ub = []; 
 [x,fval,exitflag,output,lambda] = linprog(obj,Aineq,rhs,[],[],lb,[]); 
 pi = lambda.ineqlin;
 sigma  = - lambda.eqlin; 
+
+%Constraints (7)
+%C7=zeros(num_it,numdv);
+%rhs7=zeros(num_it,1); 
+%for i=1:num_it
+  %  rhs7(i,1) = it(i,2); %demand
+ %   C7(i,i)=1; 
+%end
+%Aineq=[C6;C7];
+%rhs=[rhs6;rhs7]; 
