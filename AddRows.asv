@@ -11,13 +11,21 @@
 % If not fulfilled --> add constraint to RPM
 %--------------------------------------------------------------------------
 
-function [Opt_row, v_addrow] = AddRows(dv, it, recap, num_it)
+function [Opt_row, v_addrow] = AddRows(dv, recap, num_it)
 % Input:
 %
 % dv: Decision vbles resulting from RPM
 % recap
-% it
 % num_recap
+
+
+% Value of decision vbles
+t = dv(:,1);
+% Index of the recapture matrix of each decision vble
+index_r = dv(:,2);
+
+k = 1;
+Opt_row = 0;
 
 
 Aineq_C7 = buildC7(dv, recap, num_it);
@@ -25,8 +33,8 @@ Dp = it(:,2);
 
 C7 = Aineq_C7*dv-Dp;
 
-% Check constraint (7)
-j = find(C7>0); % Does not fulfill constraint
+
+j = find(C7>0);
 
 if min(size(j))>0
     Opt_row  = 0;
