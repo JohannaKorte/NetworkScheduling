@@ -25,12 +25,42 @@ capacity= x_Flight_num(:,3);
 
 %legs = [leg1,leg2]
 legs=string(x_Itinerary_txt(:,5:6)); 
+legs=[legs;["", ""]]; %Add ficticious 
 
 %It = [no., demand, fare]
 it=[x_Itinerary_num(:,1),x_Itinerary_num(:,4),x_Itinerary_num(:,5)]; 
+it=[it;[738,10000,0]]; %Add ficticious itinerary with unlimited demand
 num_it=length(it(:,1)); 
 
-%Recap rates
-recap_rate = x_RecapRate(:,1:3); 
+ficticious=zeros(num_it,5); 
+ficticious(:,2)=738; %Origin itinerary is 738 for now, because an itinerary 0 already exists
+ficticious(:,3)=1; %Recap rate, all people are willing to recap to this one
+for i=1:num_it
+    ficticious(i,1)=i-1; %Destination itinerary 
+    ficticious(i,4)=it(i,3); %Fare of preferred itinerary
+end 
 
+%Recap rates
+recap_rate = x_RecapRate(:,1:5); 
+recap_rate=[ficticious;recap_rate]; 
+
+%Set of already included columns
+Set = linspace(1,737,737); 
 save('Data_prob2')
+
+%Delta matrix, which flight legs part of which itineraries 
+delta=zeros(num_flights,num_it); 
+for f=1:num_flights
+    fnum = flight_no(f); 
+    for i=1:num_it
+        leg1 = legs(i,1);
+        leg2 = legs(i,2);
+        % If flight leg part of itinerary, add itinerary demand and add to
+        % Delta matrix as 1 
+        if fnum==leg1
+            delta(f,i)=1;
+        elseif fnum==leg2
+            delta(f,i)=1; 
+        end   
+    end
+end 
