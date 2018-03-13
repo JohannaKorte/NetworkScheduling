@@ -9,7 +9,7 @@ num_dv = length(t);
 % Index of the recapture matrix of each decision vble
 index_r = dv(:,2);
 
-Aineq_C7 = zeros(num_dv,num_it);
+Aineq_C7 = zeros(num_it,num_dv);
 
 for j=1:num_it
     
