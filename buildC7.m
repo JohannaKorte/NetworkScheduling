@@ -1,13 +1,10 @@
 function Aineq_C7 = buildC7(dv, recap_rate, num_it)
 
-
-
 % Value of decision vbles
-t = dv(:,1);
-num_dv = length(t);
+num_dv = length(dv);
 
 % Index of the recapture matrix of each decision vble
-index_r = dv(:,2);
+index_r = dv.i;
 
 Aineq_C7 = zeros(num_it,num_dv);
 
