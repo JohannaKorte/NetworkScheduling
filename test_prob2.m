@@ -1,40 +1,37 @@
-% ASSIGNMENT I - Problem 2
+% ASSIGNMENT Ib:  Pax Mix Flow
 %
 % TU Delft 2018
 %
 % Johanna Korte
 % Carmen Velarde
 %--------------------------------------------------------------------------
-% DATA
+% DATA for validation 
 %--------------------------------------------------------------------------
+
 clear all; close all; clc;
-
-datafile='Input_AE4424_Ass1P2.xlsx'; 
-
-%Load excel data 
-[x_Flight_num, x_Flight_txt, x_Flight_raw] = xlsread(datafile,'Flight','A2:F233');
-[x_Itinerary_num, x_Itinerary_txt, x_Itinerary_raw] = xlsread(datafile,'Itinerary','A2:G738');
-x_RecapRate = xlsread(datafile,'Recapture Rate','A2:E300');
-
+% Note: All arrays are writen in columns.
 %flight_no:array of flight numbers
 %num_flights: number of flights in total
 %capacity: array of flight capacities
-flight_no=string(x_Flight_txt(:,1));
+flight_no={'301','102','101','302','201','202'};
 num_flights=length(flight_no); 
-capacity= x_Flight_num(:,3);
+capacity= [180 144 144 108 108 108]';
 
 %legs = [leg1,leg2]
-legs=string(x_Itinerary_txt(:,5:6)); 
+legs={'301',' ';'301','101';'102',' ';'102','302';'101',' ';'302',' ';'201',' ';'202',' ';}; 
 legs=[legs;["", ""]]; %Add ficticious 
 
 %It = [no., demand, fare]
+it(:,1)=1:8;
+it(:,2)=[90 40 90 50 100 80 120 100];
+
 it=[x_Itinerary_num(:,1),x_Itinerary_num(:,4),x_Itinerary_num(:,5)]; 
 it=[it;[738,10000,0]]; %Add ficticious itinerary with unlimited demand
 num_it=length(it(:,1)); 
 
 % Add fictitius itinerary to recaptures
 ficticious=zeros(num_it,5); 
-ficticious(:,2)=737; %Destination itinerary is 738 for now, because an itinerary 0 already exists
+ficticious(:,2)=738; %Destination itinerary is 738 for now, because an itinerary 0 already exists
 ficticious(:,3)=1; %Recap rate, all people are willing to recap to this one
 for i=1:num_it
     ficticious(i,1)=i-1; %Origin itinerary 
@@ -48,7 +45,7 @@ num_recap = length(recap_rate(:,1));
 
 %Set of already included columns
 Set = linspace(1,737,737); 
-save('Data_prob2')
+save('test_prob2')
 
 %Delta matrix, which flight legs part of which itineraries 
 delta=zeros(num_flights,num_it); 

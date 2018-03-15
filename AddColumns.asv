@@ -26,8 +26,6 @@ function [Opt_col, v_addcol] = AddColumns(recap, num_recap, delta, pi, sigma)
 % Number of columns to be added
 k=1;
 Opt_col = 0;
-v_addcol = [];
-    
 for i = 1:num_recap
    
     itp = recap(i,1)+1;
@@ -51,6 +49,5 @@ end
 if k==1
     Opt_col=1;
 end
-v_addcol = v_addcol';
 
 end
