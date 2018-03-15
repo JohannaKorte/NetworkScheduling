@@ -65,22 +65,8 @@ if min(size(sigma))==0
 end
 dv(:,2)= x;
 
-%Constraints (7)
-%C7=zeros(num_it,numdv);
-%rhs7=zeros(num_it,1); 
-%for i=1:num_it
-  %  rhs7(i,1) = it(i,2); %demand
- %   C7(i,i)=1; 
-%end
-%Aineq=[C6;C7];
-%rhs=[rhs6;rhs7]; 
-
-
-
 % Main Passenger Mix Flow:
 %--------------------------------------------------------------------------
-%Decision variables t^0_1, t^0_2, ..., (t^1_1, t^1_2 ....)
-
 
 Opt_col = 0;
 Opt_row = 0;
