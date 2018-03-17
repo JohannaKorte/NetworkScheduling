@@ -87,7 +87,7 @@ while Opt_col==0 || Opt_row==0
          end  
     
         % Column generation
-        [dv, FVAL, pi, sigma] = solveRPM2(dv,recap_rate,delta,num_flights,num_it,capacity,it, v_addcol, v_addrow);
+        [dv, FVAL, pi, sigma] = SolveRPM2(dv,recap_rate,delta,num_flights,num_it,capacity,it, v_addcol, v_addrow);
                                 
     
     end
@@ -105,7 +105,7 @@ while Opt_col==0 || Opt_row==0
          end
          
         % Column generation
-        [dv, FVAL, pi, sigma] = solveRPM2(dv,recap_rate,delta,num_flights,num_it,...
+        [dv, FVAL, pi, sigma] = SolveRPM2(dv,recap_rate,delta,num_flights,num_it,...
                                           capacity,it, v_addcol, v_addrow);
    
     end
