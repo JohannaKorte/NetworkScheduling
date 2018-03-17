@@ -35,38 +35,38 @@ function [dv, FVAL, pi, sigma] = solveRPM2(dv,recap_rate,delta,num_flights,num_i
     
     %Constraints (6)
     %TODO: Two inner loops can probably be made into one
-    C6=zeros(num_flights,numdv); 
-    for f=1:num_flights
-        for p6=1:num_it
-            for r6=1:num_it
-                recap_index = find(r==r6 & p==p6); %Find right index for dv
-                if isempty(recap_index)
-                    continue 
-                else
-                    dv_index = find(dv(:,1)==recap_index);
-                    C6(dv_index)= C6(dv_index) -1* delta(f,p6); %-1 because >= constraint
-                end     
-            end   
-        end   
-        
-        for r6=1:num_it
-            for p6=1:num_it
-                recap_index = find(r==p6 & p==r6); 
-                if isempty(recap_index)
-                    continue
-                else
-                    dv_index = find(dv(:,1)==recap_index); 
-                    C6(dv_index)= C6(dv_index) -1 * -1*b(recap_index);  %-1 because >= constraint and in constraint      
-                end  
-            end
-        end 
-           
-    end
-    disp('columns 6 added')
+%     C6=zeros(num_flights,numdv); 
+%     for f=1:num_flights
+%         for p6=1:num_it
+%             for r6=1:num_it
+%                 recap_index = find(r==r6 & p==p6); %Find right index for dv
+%                 if isempty(recap_index)
+%                     continue 
+%                 else
+%                     dv_index = find(dv(:,1)==recap_index);
+%                     C6(dv_index)= C6(dv_index) -1* delta(f,p6); %-1 because >= constraint
+%                 end     
+%             end   
+%         end   
+%         
+%         for r6=1:num_it
+%             for p6=1:num_it
+%                 recap_index = find(r==p6 & p==r6); 
+%                 if isempty(recap_index)
+%                     continue
+%                 else
+%                     dv_index = find(dv(:,1)==recap_index); 
+%                     C6(dv_index)= C6(dv_index) -1 * -1*b(recap_index);  %-1 because >= constraint and in constraint      
+%                 end  
+%             end
+%         end 
+%            
+%     end
+%     disp('columns 6 added')
     
     %Because constraint >= multiply by -1 
-    rhs6=delta*it(:,2)-capacity; %Not sure if right?!  --> right ;)
-    rhs6 =rhs6*-1;
+%     rhs6=delta*it(:,2)-capacity;
+%     rhs6 =rhs6*-1;
     rhs=rhs6;
     Aineq=C6; 
  

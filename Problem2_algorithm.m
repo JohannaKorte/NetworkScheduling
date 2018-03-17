@@ -42,13 +42,47 @@ for i=1:numdv
 end
 
 %Constraints (6)
+% C6=zeros(num_flights,numdv); 
+% for f=1:num_flights
+%     for i=1:numdv
+%         %-1 because of >= 
+%         C6(f,i)=-1 * delta(f,i); 
+%     end        
+% end
+p=recap_rate(:,1);
+r=recap_rate(:,2);
+b=recap_rate(:,3); 
+fare_p=recap_rate(:,4); 
+fare_r=recap_rate(:,5); 
 C6=zeros(num_flights,numdv); 
-for f=1:num_flights
-    for i=1:numdv
-        %-1 because of >= 
-        C6(f,i)=-1 * delta(f,i); 
-    end        
-end
+    for f=1:num_flights
+        for p6=1:num_it
+            for r6=1:num_it
+                recap_index = find(r==r6 & p==p6); %Find right index for dv
+                if isempty(recap_index)
+                    continue 
+                else
+                    dv_index = find(dv(:,1)==recap_index);
+                    C6(dv_index)= C6(dv_index) -1* delta(f,p6); %-1 because >= constraint
+                end     
+            end   
+        end   
+        
+        for r6=1:num_it
+            for p6=1:num_it
+                recap_index = find(r==p6 & p==r6); 
+                if isempty(recap_index)
+                    continue
+                else
+                    dv_index = find(dv(:,1)==recap_index); 
+                    C6(dv_index)= C6(dv_index) -1 * -1*b(recap_index);  %-1 because >= constraint and in constraint      
+                end  
+            end
+        end 
+           
+    end
+    disp('columns 6 added')
+
 %Because constraint >= multiply by -1 
 rhs6=delta*it(:,2)-capacity; 
 rhs6 = rhs6*-1;
@@ -64,6 +98,7 @@ if min(size(sigma))==0
     sigma=zeros(num_it,1);
 end
 dv(:,2)= x;
+disp('Solved initial RPM')
 
 % Main Passenger Mix Flow:
 %--------------------------------------------------------------------------
@@ -79,7 +114,8 @@ while Opt_col==0 || Opt_row==0
                    
         % Solve pricing problem
         [Opt_col, v_addcol] = AddColumns(recap_rate, num_recap,  delta, pi, sigma);
-                
+        disp('Pricing problem solved') 
+        
          if Opt_col==1
              break;
          else
@@ -88,7 +124,7 @@ while Opt_col==0 || Opt_row==0
     
         % Column generation
         [dv, FVAL, pi, sigma] = SolveRPM2(dv,recap_rate,delta,num_flights,num_it,capacity,it, v_addcol, v_addrow);
-                                
+        disp('Column Generation done')
     
     end
     
@@ -97,6 +133,7 @@ while Opt_col==0 || Opt_row==0
     
         % Solve separation problem
          [Opt_row, v_addrow] = AddRows(dv, it, recap_rate, num_it);
+         disp('separation problem solved')
          
          if Opt_row==1
              break;
@@ -104,10 +141,10 @@ while Opt_col==0 || Opt_row==0
              Opt_col = 0;
          end
          
-        % Column generation
+        % Row generation
         [dv, FVAL, pi, sigma] = SolveRPM2(dv,recap_rate,delta,num_flights,num_it,...
                                           capacity,it, v_addcol, v_addrow);
-   
+        disp('Row generation solved')
     end
      
     
