@@ -8,7 +8,7 @@
 % Solve Pricing problem: Add columns
 %--------------------------------------------------------------------------
 
-function [Opt_col, v_addcol] = AddColumns(recap, num_recap, delta, pi, sigma)
+function [Opt_col, v_addcol] = AddColumns(dv, recap, num_recap, delta, pi, sigma)
 
 % AddColumns
 % Inputs:
@@ -42,7 +42,7 @@ for i = 1:num_recap
         
     cost(i) = fare_p-sum_pi_p - b*(fare_r-sum_pi_r) - sigma(itp);
     
-    if cost(i)<0
+    if cost(i)<0 && max(dv(:,1)==i)==0
     v_addcol(k) = i;
     k=k+1;
     end
