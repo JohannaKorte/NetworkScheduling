@@ -1,4 +1,5 @@
-function [dv, FVAL, pi, sigma] = solveRPM2(dv,recap_rate,delta,num_flights,num_it,capacity,it, v_addcol, v_addrow)
+function [dv, FVAL, pi, sigma] = solveRPM2(dv,recap_rate,delta,num_flights,...
+                                           num_it,capacity,it, v_addcol, v_addrow)
 
 % Inputs:
 % dv :: Array of size numdvx2 with decision variables:
@@ -67,9 +68,8 @@ function [dv, FVAL, pi, sigma] = solveRPM2(dv,recap_rate,delta,num_flights,num_i
     %Because constraint >= multiply by -1 
 %     rhs6=delta*it(:,2)-capacity;
 %     rhs6 =rhs6*-1;
-    rhs=rhs6;
-    Aineq=C6; 
- 
+
+    [Aineq,rhs] = ConstraintC6(dv, recap_rate, it,capacity, delta,num_flights);
 
     %Constraints (7)
     Aineq7=buildC7(dv, recap_rate, num_it);
@@ -77,7 +77,6 @@ function [dv, FVAL, pi, sigma] = solveRPM2(dv,recap_rate,delta,num_flights,num_i
     % Add rows:        
     Aineq=[Aineq;Aineq7(v_addrow,:)];
     rhs = [rhs;rhs7(v_addrow)];
-    disp('constraints 7 added')
     
     lb = zeros(numdv,1); 
     ub = []; 

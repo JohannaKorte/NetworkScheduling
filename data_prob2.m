@@ -48,7 +48,7 @@ num_recap = length(recap_rate(:,1));
 
 %Set of already included columns
 Set = linspace(1,737,737); 
-save('Data_prob2')
+
 
 %Delta matrix, which flight legs part of which itineraries 
 delta=zeros(num_flights,num_it); 
@@ -66,3 +66,5 @@ for f=1:num_flights
         end   
     end
 end 
+
+save('Data_prob2')
